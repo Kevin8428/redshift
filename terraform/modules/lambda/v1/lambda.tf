@@ -4,22 +4,36 @@ data "archive_file" "af" {
   output_path = "lambda_function_payload.zip"
 }
 
+resource "aws_s3_bucket_object" "object" {
+  bucket = var.bucket_name
+  key    = "lambdas/redshift-copier/${var.lambda_name}.zip"
+  source = data.archive_file.af.output_path
+  etag   = data.archive_file.af.output_md5
+  tags   = var.tags
+}
+
 resource "aws_lambda_function" "f" {
-  # If the file is not in the current working directory you will need to include a
-  # path.module in the filename.
-  filename      = "lambda_function_payload.zip"
-  function_name = var.lambda_name
-  role          = aws_iam_role.iam_for_lambda.arn
-  handler       = "redshift-copier.main"
-  timeout       = 30
+  function_name     = var.lambda_name
+  role              = aws_iam_role.iam_for_lambda.arn
+  handler           = "redshift-copier.main"
+  timeout           = 30
+  s3_bucket         = var.bucket_name
+  s3_key            = aws_s3_bucket_object.object.id
+  s3_object_version = aws_s3_bucket_object.object.version_id
+  source_code_hash  = filebase64sha256(data.archive_file.af.output_path)
 
   depends_on = [
     aws_cloudwatch_log_group.lg,
   ]
 
-  source_code_hash = data.archive_file.af.output_base64sha256
   runtime = "python3.12"
-  tags = var.tags
+  tags    = var.tags
+
+  lifecycle {
+    ignore_changes = [
+      last_modified,
+    ]
+  }
 }
 
 resource "aws_cloudwatch_log_group" "lg" {

@@ -1,5 +1,6 @@
 locals {
   system_id         = "redshift"
+  s3_bucket         = "${local.system_id}-e3j5sx" # GUID - change if exists
   region            = "us-west-2"
   availability_zone = "us-west-2a"
   tags = {
@@ -12,15 +13,17 @@ locals {
 module "lambda" {
   source      = "./modules/lambda/v1"
   lambda_name = local.system_id
+  bucket_name = local.s3_bucket
   tags        = local.tags
 }
 
 module "s3" {
   source      = "./modules/s3/v1"
-  bucket_name = "${local.system_id}-e3j5sx" # GUID - change if exists
+  bucket_name = local.s3_bucket
   lambda_arn  = module.lambda.function.arn
   tags        = local.tags
 }
+
 
 module "kinesis_stream" {
   source      = "./modules/kinesis/stream/v1"

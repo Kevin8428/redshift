@@ -7,6 +7,8 @@ client = boto3.client('redshift-data')
 
 def main(event, context):
     statement = str(uuid.uuid4())
+    print('event: ', event)
+    print('context: ', context)
     print('statement name: ', statement)
     response = client.execute_statement(
         ClusterIdentifier='redshift',

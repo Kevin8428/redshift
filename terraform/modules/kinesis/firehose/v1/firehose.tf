@@ -1,12 +1,22 @@
 resource "aws_kinesis_firehose_delivery_stream" "s" {
-  name        = var.stream_name
+  name        = var.firehose_name
   destination = "extended_s3" # no lambda required
 
   extended_s3_configuration {
     role_arn   = aws_iam_role.firehose.arn
-    bucket_arn = var.s3_bucket.arn
+    bucket_arn = var.s3_bucket_arn
 
+    buffering_interval = 10
 
+    processing_configuration {
+      enabled = "true"
+      # New line delimiter processor example
+      processors {
+        type = "AppendDelimiterToRecord"
+      }
+
+    }
+    
     cloudwatch_logging_options {
       enabled         = "true"
       log_group_name  = aws_cloudwatch_log_group.lg.name

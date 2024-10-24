@@ -3,6 +3,11 @@ variable "bucket_name" {
   description = "kinesis storage location"
 }
 
+variable "lambda_arn" {
+  type = string
+  description = "lambda object for eventing"
+}
+
 variable "tags" {
   type = map(any)
   default = {}

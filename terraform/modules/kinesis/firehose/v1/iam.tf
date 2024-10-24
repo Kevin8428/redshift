@@ -12,12 +12,12 @@ data "aws_iam_policy_document" "assume_role" {
 }
 
 resource "aws_iam_role" "firehose" {
-  name               = var.stream_name
+  name               = var.kinesis_stream.name
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
 resource "aws_iam_policy" "firehose_s3" {
-  name        = var.stream_name
+  name        = var.kinesis_stream.name
   policy      = <<-EOF
 {
   "Version": "2012-10-17",
@@ -34,8 +34,8 @@ resource "aws_iam_policy" "firehose_s3" {
             "s3:PutObject"
         ],
         "Resource": [
-            "${var.s3_bucket.arn}",
-            "${var.s3_bucket.arn}/*"
+            "${var.s3_bucket_arn}",
+            "${var.s3_bucket_arn}/*"
         ]
     }
   ]

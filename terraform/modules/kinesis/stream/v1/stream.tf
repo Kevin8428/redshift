@@ -1,6 +1,7 @@
 resource "aws_kinesis_stream" "s" {
   name             = var.stream_name
   retention_period = 24
+  shard_count      = 1
 
   shard_level_metrics = [
     "IncomingBytes",
@@ -8,7 +9,7 @@ resource "aws_kinesis_stream" "s" {
   ]
 
   stream_mode_details {
-    stream_mode = "ON_DEMAND"
+    stream_mode = "PROVISIONED"
   }
 
   tags = var.tags

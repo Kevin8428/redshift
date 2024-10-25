@@ -4,6 +4,7 @@ Copy from s3 to redshift. This is very rough and just for use as a POC.
 
 import uuid
 import json
+import time
 
 import boto3
 
@@ -21,7 +22,7 @@ def main(event, context):
     bucket = event.get('Records')[0].get('s3', '').get('bucket', '').get('name', '')
     key = event.get('Records')[0].get('s3', '').get('object', '').get('key', '')
     source = f's3://{bucket}/{key}'
-    query = f'COPY redshift.public.tickdata FROM \'{source}\' IAM_ROLE \'arn:aws:iam::__ACCOUNT__ID:role/redshift-redshift-cluster\' FORMAT AS CSV DELIMITER \',\' QUOTE \'"\' REGION AS \'us-west-2\''
+    query = f'COPY redshift.public.daily_price FROM \'{source}\' IAM_ROLE \'arn:aws:iam::__ACCOUNT__ID:role/redshift-redshift-cluster\' FORMAT AS CSV DELIMITER \',\' QUOTE \'"\' REGION AS \'us-west-2\' DATEFORMAT \'YYYY-MM-DD\''
     response = client.execute_statement(
         ClusterIdentifier='redshift',
         Database='redshift',
@@ -30,4 +31,10 @@ def main(event, context):
         Sql=query,
     )
     print('response: ', response)
+    sid = response.get('Id')
+    time.sleep(4)
+    response = client.list_statements()
+    print('list_statements: ', response)
+    response = client.describe_statement(Id=sid)
+    print('describe_statement: ', response)
     return json.dumps(response, default=str)

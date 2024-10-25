@@ -22,6 +22,6 @@ aws redshift-data execute-statement \
     --cluster-identifier redshift \
     --database redshift \
     --db-user someone \
-    --sql "create table tickdata( Date timestamp without time zone, bid_level_1	real NULL, bid_level_2	real NULL, ask_level_1	real NULL, ask_level_2	real NULL, Volume	integer	NULL );" > /dev/null
+    --sql "create table daily_price( Symbol VARCHAR, Date DATE, close_ real NULL, Volume	integer	NULL, open_ real NULL, high real NULL, low real NULL );" > /dev/null
 
 sed -i "" "s/$ACCOUNT_ID/__ACCOUNT__ID/g" apps/redshift-copier/redshift-copier.py

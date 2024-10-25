@@ -115,6 +115,14 @@ resource "aws_iam_policy" "kinesis_firehose" {
             "kinesis:ListShards"
         ],
         "Resource": "${var.kinesis_stream.arn}"
+    },
+    {
+        "Sid": "",
+        "Effect": "Allow",
+        "Action": [
+            "glue:*"
+        ],
+        "Resource": "${var.kinesis_stream.arn}"
     }
   ]
 }

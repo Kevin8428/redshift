@@ -56,8 +56,24 @@ resource "aws_iam_policy" "redshift" {
                 "logs:PutLogEvents"
             ],
             "Resource": "*"
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "ec2:DescribeNetworkInterfaces",
+            "ec2:CreateNetworkInterface",
+            "ec2:DeleteNetworkInterface",
+            "ec2:DescribeInstances",
+            "ec2:AttachNetworkInterface"
+          ],
+          "Resource": "*"
         }
     ]
 }
 EOF
+}
+
+resource "aws_iam_role_policy_attachment" "AWSLambdaVPCAccessExecutionRole" {
+    role       = aws_iam_role.iam_for_lambda.name
+    policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }

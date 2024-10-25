@@ -28,6 +28,11 @@ variable "firehose_name" {
   description = "firehose stream name"
 }
 
+# variable "glue_catalog_table" {
+#   type    = map
+#   default = {}
+# }
+
 variable "tags" {
   type    = map(any)
   default = {}

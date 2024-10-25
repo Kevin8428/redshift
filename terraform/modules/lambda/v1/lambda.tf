@@ -22,6 +22,11 @@ resource "aws_lambda_function" "f" {
   s3_object_version = aws_s3_bucket_object.object.version_id
   source_code_hash  = filebase64sha256(data.archive_file.af.output_path)
 
+  # vpc_config {
+  #   subnet_ids         = [var.subnet_id]
+  #   security_group_ids = [var.security_group_id]
+  # }
+
   depends_on = [
     aws_cloudwatch_log_group.lg,
   ]

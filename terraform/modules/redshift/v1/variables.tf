@@ -8,6 +8,11 @@ variable "cluster_name" {
   description = "firehose stream name"
 }
 
+variable "availability_zone" {
+  type        = string
+  description = "az for cluster"
+}
+
 variable "master_username" {
   type        = string
   description = ""
@@ -26,6 +31,15 @@ variable "node_type" {
 variable "cluster_type" {
   type        = string
   description = ""
+}
+
+variable "subnet_ids" {
+  type        = list(any)
+  description = "subnets within VPC eligible for cluster"
+}
+
+variable "security_group_ids" {
+  type = list(any)
 }
 
 variable "tags" {

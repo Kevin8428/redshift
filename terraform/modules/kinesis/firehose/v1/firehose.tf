@@ -17,6 +17,27 @@ resource "aws_kinesis_firehose_delivery_stream" "s" {
 
     }
     
+    # data_format_conversion_configuration {
+    #   input_format_configuration {
+    #     deserializer {
+    #       hive_json_ser_de {}
+    #     }
+    #   }
+
+    #   output_format_configuration {
+    #     serializer {
+    #       orc_ser_de {}
+    #     }
+    #   }
+
+    #   schema_configuration {
+    #     database_name = var.glue_catalog_table.database_name
+    #     # allow glue access
+    #     role_arn      = aws_iam_role.firehose.arn
+    #     table_name    = var.glue_catalog_table.name
+    #   }
+    # }
+    
     cloudwatch_logging_options {
       enabled         = "true"
       log_group_name  = aws_cloudwatch_log_group.lg.name

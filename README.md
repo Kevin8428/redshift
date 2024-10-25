@@ -5,6 +5,9 @@ This deploys most resources to a new VPC, but not all.
 
 This is a proof of concept and has a long way to go before being production ready.
 
+[Looker Studio Visual](https://lookerstudio.google.com/s/iz338PVP92g)
+
+Quick Sights Visual:
 ![workflow](./images/data_ingestion_workflow.png)
 
 # To Deploy

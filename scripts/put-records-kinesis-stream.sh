@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# filename='data/large_cap_daily.csv'
-filename='data/sample.txt'
+filename='data/large_cap_daily.csv'
+# filename='data/sample.txt'
 echo publishing $filename to kinesis
 while read p; do 
     aws kinesis put-record \

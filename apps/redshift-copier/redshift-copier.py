@@ -31,10 +31,4 @@ def main(event, context):
         Sql=query,
     )
     print('response: ', response)
-    sid = response.get('Id')
-    time.sleep(4)
-    response = client.list_statements()
-    print('list_statements: ', response)
-    response = client.describe_statement(Id=sid)
-    print('describe_statement: ', response)
     return json.dumps(response, default=str)

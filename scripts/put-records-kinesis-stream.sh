@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# data="{\"event\":\"cli_invoked_event\",\"value\":\"some-val\", \"ts\":\"something\"}"
-filename='tickdata/sample.txt'
-echo reading file
+filename='data/sample.txt'
+echo publishing to kinesis
 while read p; do 
     aws kinesis put-record \
         --cli-binary-format raw-in-base64-out \

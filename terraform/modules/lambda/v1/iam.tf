@@ -1,3 +1,4 @@
+data "aws_caller_identity" "current" {}
 data "aws_iam_policy_document" "assume_role" {
   statement {
     effect = "Allow"
@@ -33,8 +34,8 @@ resource "aws_iam_policy" "redshift" {
                 "redshift-data:*"
             ],
             "Resource": [
-                "arn:aws:redshift:us-west-2:830370670734:cluster:redshift",
-                "arn:aws:redshift:us-west-2:830370670734:*",
+                "arn:aws:redshift:us-west-2:${data.aws_caller_identity.current.account_id}:cluster:redshift",
+                "arn:aws:redshift:us-west-2:${data.aws_caller_identity.current.account_id}:*",
                 "*"
             ]
         },
@@ -44,7 +45,7 @@ resource "aws_iam_policy" "redshift" {
                 "redshift:*"
             ],
             "Resource": [
-                "arn:aws:redshift:us-west-2:830370670734:dbname:redshift/redshift",
+                "arn:aws:redshift:us-west-2:${data.aws_caller_identity.current.account_id}:dbname:redshift/redshift",
                 "*"
             ]
         },

@@ -14,7 +14,6 @@ resource "aws_redshift_cluster" "default" {
   master_password    = var.master_password
   node_type          = var.node_type
   cluster_type       = var.cluster_type
-  # default_iam_role_arn = "arn:aws:iam::830370670734:role/aws-service-role/redshift.amazonaws.com/AWSServiceRoleForRedshift"
   tags                = var.tags
   skip_final_snapshot = true
   publicly_accessible = true

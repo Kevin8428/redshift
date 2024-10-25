@@ -11,13 +11,6 @@ locals {
   }
 }
 
-# use to define schema for converting csv to parquet in firehose
-# module "glue" {
-#   source  = "./modules/glue/v1"
-#   db_name = local.system_id
-#   tags    = local.tags
-# }
-
 module "vpc" {
   source     = "./modules/vpc/v1"
   cidr_block = local.cidr_block
@@ -33,8 +26,6 @@ module "gateway" {
   vpc    = local.vpc
   tags   = local.tags
 }
-
-# module.public_subnet_1.nat_gateway_id
 
 module "sg_redshift" {
   source = "./modules/security_group/redshift/v1"
@@ -81,7 +72,6 @@ module "kinesis_stream" {
 
 module "kinesis_firehose" {
   source = "./modules/kinesis/firehose/v1"
-  # glue_catalog_table = module.glue.table
   firehose_name  = local.system_id
   s3_bucket_arn  = module.s3.bucket.arn
   kinesis_stream = module.kinesis_stream.aws_kinesis_stream
@@ -93,7 +83,6 @@ module "redshift" {
   enabled            = true
   cluster_name       = local.system_id
   subnet_ids         = [module.subnet_1.subnet_id]
-  # security_group_ids = [module.sg_lambda.security_group.id]
   security_group_ids = [module.sg_redshift.security_group.id]
   availability_zone  = local.availability_zone
   master_username    = "someone"
@@ -102,3 +91,10 @@ module "redshift" {
   cluster_type       = "single-node"
   tags               = local.tags
 }
+
+# use to define schema for converting csv to parquet in firehose
+# module "glue" {
+#   source  = "./modules/glue/v1"
+#   db_name = local.system_id
+#   tags    = local.tags
+# }

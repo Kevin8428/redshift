@@ -5,9 +5,9 @@ This deploys most resources to a new VPC, but not all.
 
 This is a proof of concept and has a long way to go before being production ready.
 
-[Looker Studio Visual](https://lookerstudio.google.com/s/iz338PVP92g)
+[Looker Studio Visual](https://lookerstudio.google.com/reporting/d25a4a8f-178e-42d3-be52-c7e5e71fe0c6/page/fmIHE)
 
-Quick Sights Visual:
+System Design:
 ![workflow](./images/data_ingestion_workflow.png)
 
 # To Deploy
@@ -73,6 +73,17 @@ Quick Sights Visual:
     - Don't need to load into redshift tables.
 - Connecting redshift to Quicksight is quick and visualizations are very easy/intuitive.
     - You can also hook up Redshift to Looker, Power BI, Tableau.
+- Treat this as OLAP, not OLTP
+    - This is better suited to analytics (querying) than a transactional DB (CRUD actions).
+    - This will not dedupe like a transactional DB. Must be mindful of ingesting from multiple sources.
+
+## Use Cases
+- Real time analytics - eg Uber setting surge pricing, matching drivers and riders, expected traffic for holidays
+- Combining data sources. Can combine strucutred/unstrucutred data.
+- Should consider RDS if you don't actually have large volues of data (< petabytes) now or in near future
+
+## Benchmark
+- benchmark COPY and QUERY.
 
 ## Miscellaneous Notes
 - The redshift-data API mostly works asynchronously. This make sense given some operations could take hours/days. 
